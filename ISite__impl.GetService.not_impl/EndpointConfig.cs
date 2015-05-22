@@ -3,6 +3,8 @@ namespace ISite__impl.GetService.not_impl
 {
     using NServiceBus;
     using NServiceBus.Logging;
+    using NServiceBus.Persistence.MongoDB;
+    using System.Reflection;
 
     /*
 		This class configures this endpoint as a Server. More information about how to configure the NServiceBus host
@@ -14,8 +16,8 @@ namespace ISite__impl.GetService.not_impl
         {
             LogManager.Use<DefaultFactory>().Level(LogLevel.Info);
             configuration.UseSerialization<NServiceBus.JsonSerializer>();
-            configuration.EnableInstallers();
-            configuration.UsePersistence<InMemoryPersistence>();
+            configuration.EnableInstallers(); 
+            configuration.UsePersistence<MongoDbPersistence>().SetConnectionString("mongodb://localhost/" + Assembly.GetCallingAssembly().GetName().Name.Replace(".", "-"));
         }
     }
 }
